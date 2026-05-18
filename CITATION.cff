@@ -1,0 +1,56 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite both the paper and this software archive."
+title: "EvalMORAAL: Interpretable Chain-of-Thought and LLM-as-Judge Evaluation for Moral Alignment in Large Language Models"
+type: software
+version: "v1.0-thesis"
+date-released: "2026-05-09"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.20091845
+    description: Zenodo archive of the v1.0-thesis snapshot
+license: MIT
+repository-code: "https://github.com/mohammadi-hadi/EvalMORAAL"
+authors:
+  - given-names: "Hadi"
+    family-names: "Mohammadi"
+    affiliation: "Utrecht University"
+  - given-names: "Anastasia"
+    family-names: "Giachanou"
+    affiliation: "Utrecht University"
+  - given-names: "Robert A."
+    family-names: "Bagheri"
+    affiliation: "Utrecht University"
+keywords:
+  - "moral alignment"
+  - "chain-of-thought"
+  - "LLM-as-judge"
+  - "World Values Survey"
+  - "evaluation framework"
+  - "large language models"
+abstract: >-
+  EvalMORAAL is a moral-alignment evaluation framework for large language
+  models that combines chain-of-thought (CoT) elicitation with LLM-as-
+  judge peer review. Evaluating 20 models against the World Values Survey
+  (64 countries) and PEW Global Attitudes Survey (27 topics, 5 repetitions
+  per cell), we find that explicit CoT reasoning consistently improves
+  alignment over implicit log-probability scoring, while peer-review
+  judging by GPT-4o reproduces human preferences more reliably than naive
+  aggregation. A persistent Western / non-Western gap remains across model
+  families and scales.
+preferred-citation:
+  type: conference-paper
+  title: "EvalMORAAL: Interpretable Chain-of-Thought and LLM-as-Judge Evaluation for Moral Alignment in Large Language Models"
+  year: 2026
+  conference:
+    name: "Proceedings of the 15th Joint Conference on Lexical and Computational Semantics (*SEM 2026), ACL 2026"
+  url: "https://arxiv.org/abs/2510.05942"
+  authors:
+    - given-names: "Hadi"
+      family-names: "Mohammadi"
+      affiliation: "Utrecht University"
+    - given-names: "Anastasia"
+      family-names: "Giachanou"
+      affiliation: "Utrecht University"
+    - given-names: "Robert A."
+      family-names: "Bagheri"
+      affiliation: "Utrecht University"
