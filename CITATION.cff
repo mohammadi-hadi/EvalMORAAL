@@ -3,11 +3,11 @@ message: "If you use this code or data, please cite both the paper and this soft
 title: "EvalMORAAL: Interpretable Chain-of-Thought and LLM-as-Judge Evaluation for Moral Alignment in Large Language Models"
 type: software
 version: "v1.0-thesis"
-date-released: "2026-05-09"
+date-released: "2026-05-18"
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.20091845
-    description: Zenodo archive of the v1.0-thesis snapshot
+    value: 10.5281/zenodo.20263056
+    description: Zenodo concept DOI (all versions) for the v1.0-thesis archive
 license: MIT
 repository-code: "https://github.com/mohammadi-hadi/EvalMORAAL"
 authors:
