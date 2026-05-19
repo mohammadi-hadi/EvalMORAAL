@@ -2,7 +2,7 @@
 
 # EvalMORAAL Framework for Moral Alignment Evaluation in Large Language Models
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20263056.svg)](https://doi.org/10.5281/zenodo.20263056)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20291678.svg)](https://doi.org/10.5281/zenodo.20291678)
 [![arXiv](https://img.shields.io/badge/arXiv-2510.05942-b31b1b.svg)](https://arxiv.org/abs/2510.05942)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -19,7 +19,7 @@
 | **Affiliation**  | Utrecht University, The Netherlands |
 | **Venue**        | Proceedings of the 15th Joint Conference on Lexical and Computational Semantics (*SEM 2026), ACL 2026 (in press) |
 | **arXiv**        | [2510.05942](https://arxiv.org/abs/2510.05942) |
-| **Code archive** | [10.5281/zenodo.20263056](https://doi.org/10.5281/zenodo.20263056) (this repository, snapshot v1.0-thesis) |
+| **Code archive** | [10.5281/zenodo.20291678](https://doi.org/10.5281/zenodo.20291678) (this repository, snapshot v1.0-thesis) |
 
 > This repository accompanies **Chapter 7** of the PhD thesis
 > *Let Me Explain! Explainable NLP for Understanding Large Language Models* (Hadi Mohammadi, Utrecht University, 2026).
@@ -49,8 +49,8 @@ If you use this code or data, please cite **both** the paper and this code archi
   year      = {2026},
   publisher = {Zenodo},
   version   = {v1.0-thesis},
-  doi       = {10.5281/zenodo.20263056},
-  url       = {https://doi.org/10.5281/zenodo.20263056}
+  doi       = {10.5281/zenodo.20291678},
+  url       = {https://doi.org/10.5281/zenodo.20291678}
 }
 ```
 
