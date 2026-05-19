@@ -6,7 +6,7 @@ version: "v1.0-thesis"
 date-released: "2026-05-18"
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.20291678
+    value: 10.5281/zenodo.20292113
     description: Zenodo concept DOI (all versions) for the v1.0-thesis archive
 license: MIT
 repository-code: "https://github.com/mohammadi-hadi/EvalMORAAL"

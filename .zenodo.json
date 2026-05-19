@@ -1,0 +1,23 @@
+{
+  "title": "EvalMORAAL: Interpretable Chain-of-Thought and LLM-as-Judge Evaluation for Moral Alignment in Large Language Models",
+  "description": "Code, evaluation pipeline, and analysis for the EvalMORAAL framework that combines chain-of-thought elicitation with LLM-as-judge peer review to evaluate moral alignment of 20 large language models against the World Values Survey (64 countries) and PEW Global Attitudes Survey (27 topics). Archived snapshot for the v1.0-thesis release accompanying the doctoral thesis Let Me Explain! Explainable NLP for Understanding Large Language Models (Utrecht University, 2026).",
+  "creators": [
+    {"name": "Mohammadi, Hadi", "orcid": "0000-0003-0860-9200", "affiliation": "Utrecht University"},
+    {"name": "Giachanou, Anastasia", "affiliation": "Utrecht University"},
+    {"name": "Bagheri, Robert A.", "affiliation": "Utrecht University"}
+  ],
+  "license": "mit",
+  "upload_type": "software",
+  "version": "v1.0-thesis",
+  "keywords": [
+    "moral alignment",
+    "chain-of-thought",
+    "LLM-as-judge",
+    "World Values Survey",
+    "evaluation framework",
+    "large language models"
+  ],
+  "related_identifiers": [
+    {"identifier": "https://arxiv.org/abs/2510.05942", "relation": "isSupplementTo", "scheme": "url"}
+  ]
+}
