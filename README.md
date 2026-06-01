@@ -127,7 +127,6 @@ EvalMORAAL/
 ├── LICENSE
 ├── CITATION.cff
 ├── CONTRIBUTING.md
-├── paper.pdf                                   # Paper (preprint)
 ├── code/
 │   ├── analysis/
 │   │   ├── __init__.py
@@ -135,7 +134,7 @@ EvalMORAAL/
 │   │   ├── visualization.py                    # Heatmap / scatter plotting utilities
 │   │   └── utils.py                            # Helper functions
 │   └── requirements.txt
-└── figures/                                    # README images (full figures are in paper.pdf)
+└── figures/                                    # README images (full figures are in the published paper)
     ├── cover.png                               # Framework overview
     └── scatter_tiers_WVS.png                   # Model performance tiers (WVS)
 ```
