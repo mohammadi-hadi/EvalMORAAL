@@ -18,6 +18,7 @@
     "large language models"
   ],
   "related_identifiers": [
+    {"identifier": "10.18653/v1/2026.starsem-conference.34", "relation": "isSupplementTo", "scheme": "doi"},
     {"identifier": "https://arxiv.org/abs/2510.05942", "relation": "isSupplementTo", "scheme": "url"}
   ]
 }

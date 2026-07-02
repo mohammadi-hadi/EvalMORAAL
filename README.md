@@ -17,8 +17,9 @@
 | **Title**        | EvalMORAAL: Interpretable Chain-of-Thought and LLM-as-Judge Evaluation for Moral Alignment in Large Language Models |
 | **Authors**      | Hadi Mohammadi, Anastasia Giachanou, Robert A. Bagheri |
 | **Affiliation**  | Utrecht University, The Netherlands |
-| **Venue**        | Proceedings of the 15th Joint Conference on Lexical and Computational Semantics (*SEM 2026), ACL 2026 (in press) |
-| **arXiv**        | [2510.05942](https://arxiv.org/abs/2510.05942) |
+| **Venue**        | Proceedings of the 15th Joint Conference on Lexical and Computational Semantics (*SEM 2026), ACL 2026, pp. 497–515 |
+| **ACL Anthology**| [2026.starsem-conference.34](https://aclanthology.org/2026.starsem-conference.34/) · DOI [10.18653/v1/2026.starsem-conference.34](https://doi.org/10.18653/v1/2026.starsem-conference.34) |
+| **arXiv**        | [2510.05942](https://arxiv.org/abs/2510.05942) (preprint) |
 | **Code archive** | [10.5281/zenodo.20292113](https://doi.org/10.5281/zenodo.20292113) (this repository, snapshot v1.0-thesis) |
 
 > This repository accompanies **Chapter 7** of the PhD thesis
@@ -36,11 +37,15 @@ If you use this code or data, please cite **both** the paper and this code archi
 @inproceedings{mohammadi2026evalmoraal,
   title         = {EvalMORAAL: Interpretable Chain-of-Thought and LLM-as-Judge Evaluation for Moral Alignment in Large Language Models},
   author        = {Mohammadi, Hadi and Giachanou, Anastasia and Bagheri, Robert A.},
+  editor        = {Mohammad, Saif M. and Ousidhoum, Nedjma},
+  booktitle     = {Proceedings of the 15th Joint Conference on Lexical and Computational Semantics (*SEM 2026)},
+  month         = jul,
   year          = {2026},
-  booktitle     = {Proceedings of the 15th Joint Conference on Lexical and Computational Semantics (*SEM 2026), ACL 2026},
-  eprint        = {2510.05942},
-  archivePrefix = {arXiv},
-  url           = {https://arxiv.org/abs/2510.05942}
+  address       = {San Diego, California, United States},
+  publisher     = {Association for Computational Linguistics},
+  pages         = {497--515},
+  doi           = {10.18653/v1/2026.starsem-conference.34},
+  url           = {https://aclanthology.org/2026.starsem-conference.34/}
 }
 
 @software{mohammadi_evalmoraal_2026,

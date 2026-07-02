@@ -41,9 +41,15 @@ preferred-citation:
   type: conference-paper
   title: "EvalMORAAL: Interpretable Chain-of-Thought and LLM-as-Judge Evaluation for Moral Alignment in Large Language Models"
   year: 2026
+  month: 7
+  doi: "10.18653/v1/2026.starsem-conference.34"
+  start: 497
+  end: 515
+  publisher:
+    name: "Association for Computational Linguistics"
   conference:
     name: "Proceedings of the 15th Joint Conference on Lexical and Computational Semantics (*SEM 2026), ACL 2026"
-  url: "https://arxiv.org/abs/2510.05942"
+  url: "https://aclanthology.org/2026.starsem-conference.34/"
   authors:
     - given-names: "Hadi"
       family-names: "Mohammadi"
