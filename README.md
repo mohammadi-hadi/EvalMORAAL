@@ -4,6 +4,8 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20292113.svg)](https://doi.org/10.5281/zenodo.20292113)
 [![arXiv](https://img.shields.io/badge/arXiv-2510.05942-b31b1b.svg)](https://arxiv.org/abs/2510.05942)
+[![CI](https://github.com/mohammadi-hadi/EvalMORAAL/actions/workflows/ci.yml/badge.svg)](https://github.com/mohammadi-hadi/EvalMORAAL/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://github.com/mohammadi-hadi/EvalMORAAL)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 *Chain-of-Thought reasoning + LLM-as-judge peer review for moral alignment evaluation.*
@@ -107,68 +109,52 @@ EvalMORAAL is a comprehensive evaluation framework for assessing moral alignment
 <br><i>Model performance tiers based on WVS correlation</i>
 </div>
 
-## Quick Start
-
-```bash
-# Clone the repository
-git clone https://github.com/mohammadi-hadi/EvalMORAAL.git
-cd EvalMORAAL
-
-# Install dependencies
-pip install -r code/requirements.txt
-
-# Run conflict detection example
-python -c "
-from code.analysis import detect_conflicts_between_models
-# Your analysis code here
-"
-```
-
-## Repository Structure
-
-```
-EvalMORAAL/
-├── README.md
-├── LICENSE
-├── CITATION.cff
-├── CONTRIBUTING.md
-├── code/
-│   ├── analysis/
-│   │   ├── __init__.py
-│   │   ├── conflict_detector.py                # Conflict detection between model verdicts
-│   │   ├── visualization.py                    # Heatmap / scatter plotting utilities
-│   │   └── utils.py                            # Helper functions
-│   └── requirements.txt
-└── figures/                                    # README images (full figures are in the published paper)
-    ├── cover.png                               # Framework overview
-    └── scatter_tiers_WVS.png                   # Model performance tiers (WVS)
-```
-
 ## Installation
 
+EvalMORAAL is a regular Python package (Python 3.9+):
+
+```bash
+pip install "evalmoraal @ git+https://github.com/mohammadi-hadi/EvalMORAAL.git"
+```
+
+Optional extras:
+
+```bash
+# API clients for model scoring and peer review (OpenAI, Anthropic, Google)
+pip install "evalmoraal[api] @ git+https://github.com/mohammadi-hadi/EvalMORAAL.git"
+
+# Streamlit dashboard for human arbitration
+pip install "evalmoraal[dashboards] @ git+https://github.com/mohammadi-hadi/EvalMORAAL.git"
+```
+
+Or work from a clone:
+
 ```bash
 git clone https://github.com/mohammadi-hadi/EvalMORAAL.git
 cd EvalMORAAL
-pip install -r code/requirements.txt
+pip install -e ".[api,dashboards,dev]"
+pytest   # run the test suite
 ```
 
-## Usage
+Prebuilt wheels are attached to [GitHub Releases](https://github.com/mohammadi-hadi/EvalMORAAL/releases).
+
+## Quick Start
 
 ### Conflict Detection
 
 ```python
-from code.analysis import (
+from evalmoraal.analysis import (
     extract_score,
     calculate_severity,
     detect_conflicts_between_models,
-    calculate_conflict_statistics
+    calculate_conflict_statistics,
 )
 
 # Detect conflicts between two model outputs
 conflicts = detect_conflicts_between_models(
     "GPT-4o", gpt4_results,
     "Claude-3-Opus", claude_results,
-    min_severity="medium"
+    min_severity="medium",
 )
 
 # Calculate statistics
@@ -180,15 +166,77 @@ print(f"Severity breakdown: {stats['severity_breakdown']}")
 ### Visualization
 
 ```python
-from code.analysis import plot_country_heatmap, plot_topic_heatmap
+from evalmoraal.analysis import plot_country_heatmap, plot_topic_heatmap
 
 # Create country-wise correlation heatmap
 plot_country_heatmap(
     data=results_df,
     value_col="correlation",
     title="Model Performance by Country",
-    save_path="figures/country_heatmap.png"
+    save_path="figures/country_heatmap.png",
 )
+```
+
+### Working with survey data
+
+```python
+from evalmoraal.core import WVSProcessor
+
+processor = WVSProcessor(data_dir="sample_data")
+processor.load_data()
+scores = processor.process_moral_scores()          # normalized to [-1, 1]
+eval_data = processor.create_evaluation_dataset(n_samples=100)
+```
+
+### Peer review (LLM-as-judge)
+
+```python
+from evalmoraal.core import ModelJudge
+
+judge = ModelJudge()   # reads OPENAI_API_KEY / ANTHROPIC_API_KEY / GOOGLE_API_KEY
+critique_df = judge.run_reciprocal_critique(models, reasoning_traces)
+agreement = judge.calculate_peer_agreement_rates(critique_df)
+```
+
+## Command Line
+
+The full pipeline (dual scoring, conflict detection, peer review, reports)
+runs from the command line:
+
+```bash
+export OPENAI_API_KEY=sk-...
+evalmoraal run --models gpt-4o-mini --samples 10 --data-dir sample_data
+```
+
+Review conflicts in the human arbitration dashboard:
+
+```bash
+evalmoraal dashboard          # requires the 'dashboards' extra
+evalmoraal dashboard --judge  # extended judge dashboard
+```
+
+## Data
+
+The pipeline expects a `WVS_Moral.csv` file inside `--data-dir` with a
+`B_COUNTRY` column (numeric WVS country codes) and the moral question
+columns `Q176`-`Q198` on the original 1-10 scale. The survey data itself
+is distributed by the [World Values Survey](https://www.worldvaluessurvey.org/)
+and is not bundled with this repository.
+
+## Package Structure
+
+```
+EvalMORAAL/
+├── pyproject.toml                    # package metadata (pip install evalmoraal)
+├── src/evalmoraal/
+│   ├── analysis/                     # conflict detection, score utils, plotting
+│   ├── core/                         # WVS processing, dual scoring, judge, pipeline
+│   ├── evaluation/                   # cross-evaluation, conflict resolution, dashboards
+│   ├── visualization/                # figure and paper output generators
+│   ├── cli.py                        # the `evalmoraal` command
+│   └── env.py                        # API key handling (.env support)
+├── tests/                            # unit tests (no API calls needed)
+└── figures/                          # README images (full figures are in the paper)
 ```
 
 ## Figures
