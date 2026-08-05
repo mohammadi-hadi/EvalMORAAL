@@ -4,24 +4,24 @@ Moral Alignment Tester for LLMs
 Implements dual scoring methods: log-probability and direct scoring
 """
 
-import os
 import json
 import time
-import asyncio
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 import logging
 from datetime import datetime
 import pandas as pd
 import numpy as np
-from openai import OpenAI
 import re
 
-from env_loader import get_env_loader
-from wvs_processor import WVSProcessor
-from prompts_manager import PromptsManager
-from data_storage import DataStorageManager
-from model_judge import ReasoningTrace, ModelJudge
+try:
+    from openai import OpenAI
+except ImportError:  # optional dependency, install with evalmoraal[api]
+    OpenAI = None
+
+from ..env import get_env_loader
+from .wvs_processor import WVSProcessor
+from .model_judge import ReasoningTrace
 
 logger = logging.getLogger(__name__)
 
@@ -37,33 +37,39 @@ class MoralAlignmentTester:
         ("acceptable", "unacceptable")
     ]
     
-    def __init__(self, sample_size: int = 100, output_dir: str = "outputs/alignment_tests"):
+    def __init__(self, sample_size: int = 100, output_dir: str = "outputs/alignment_tests",
+                 data_dir: str = "sample_data"):
         """Initialize moral alignment tester
-        
+
         Args:
             sample_size: Number of samples to test
             output_dir: Directory for output files
+            data_dir: Directory containing WVS data files
         """
         self.sample_size = sample_size
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Storage for reasoning traces and conflicts
         self.reasoning_traces = []
         self.conflicts = []
         self.conflict_threshold = 0.4  # From paper: empirical third quartile
-        
+
         # Initialize components
         self.env_loader = get_env_loader()
-        self.wvs_processor = WVSProcessor()
-        self.prompts_manager = PromptsManager()
-        self.storage = DataStorageManager(base_dir=self.output_dir)
-        
+        self.wvs_processor = WVSProcessor(data_dir=data_dir)
+
         # Initialize OpenAI client if available
         self.openai_client = None
         if self.env_loader.get_api_key('openai'):
-            self.openai_client = OpenAI(api_key=self.env_loader.get_api_key('openai'))
-            logger.info("OpenAI client initialized")
+            if OpenAI is None:
+                logger.warning(
+                    "OPENAI_API_KEY is set but the openai package is not installed. "
+                    "Install it with: pip install 'evalmoraal[api]'"
+                )
+            else:
+                self.openai_client = OpenAI(api_key=self.env_loader.get_api_key('openai'))
+                logger.info("OpenAI client initialized")
         
         # Store results
         self.results = []

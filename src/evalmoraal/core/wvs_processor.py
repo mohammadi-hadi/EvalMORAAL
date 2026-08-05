@@ -82,9 +82,9 @@ class WVSProcessor:
         'Oceania': [36, 554]
     }
     
-    def __init__(self, data_dir: Path = Path("sample_data")):
+    def __init__(self, data_dir: "str | Path" = Path("sample_data")):
         """Initialize WVS processor
-        
+
         Args:
             data_dir: Directory containing WVS data files
         """

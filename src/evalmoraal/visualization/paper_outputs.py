@@ -19,18 +19,13 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
-# Set style for publication
-plt.style.use('seaborn-v0_8-paper')
-sns.set_context("paper")
-sns.set_palette("colorblind")
-
 class PaperOutputGenerator:
     """Generates paper-ready outputs for moral alignment study"""
-    
+
     def __init__(self, results_dir: str = "outputs/alignment_tests",
                  output_dir: str = "outputs/paper"):
         """Initialize paper output generator
-        
+
         Args:
             results_dir: Directory containing test results
             output_dir: Directory for paper outputs
@@ -38,6 +33,11 @@ class PaperOutputGenerator:
         self.results_dir = Path(results_dir)
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Set style for publication
+        plt.style.use('seaborn-v0_8-paper')
+        sns.set_context("paper")
+        sns.set_palette("colorblind")
         
         # Create subdirectories
         self.tables_dir = self.output_dir / "tables"

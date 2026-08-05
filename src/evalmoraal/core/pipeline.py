@@ -7,48 +7,46 @@ Implements the complete methodology from the paper:
 3. Human arbitration for conflicts
 """
 
-import os
 import json
-import time
 import logging
-import argparse
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 import pandas as pd
 import numpy as np
 
-# Local imports
-from env_loader import get_env_loader
-from wvs_processor import WVSProcessor
-from moral_alignment_tester import MoralAlignmentTester
-from model_judge import ModelJudge, ReasoningTrace
-from validation_suite import ValidationSuite
-from paper_outputs import PaperOutputGenerator
-from moral_visualization import MoralVisualizationEngine
+from ..env import get_env_loader
+from ..visualization.moral_visualization import MoralVisualizationEngine
+from ..visualization.paper_outputs import PaperOutputGenerator
+from .model_judge import ModelJudge
+from .moral_alignment_tester import MoralAlignmentTester
+from .validation_suite import ValidationSuite
+from .wvs_processor import WVSProcessor
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class FullValidationPipeline:
     """Complete validation pipeline matching paper methodology"""
     
-    def __init__(self, output_dir: str = "outputs/full_validation"):
+    def __init__(self, output_dir: str = "outputs/full_validation",
+                 data_dir: str = "sample_data"):
         """Initialize validation pipeline
-        
+
         Args:
             output_dir: Directory for all outputs
+            data_dir: Directory containing WVS data files
         """
         self.timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         self.output_dir = Path(output_dir) / f"run_{self.timestamp}"
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Initialize components
         self.env_loader = get_env_loader()
-        self.wvs = WVSProcessor()
-        self.tester = MoralAlignmentTester(output_dir=self.output_dir / "alignment_tests")
+        self.wvs = WVSProcessor(data_dir=data_dir)
+        self.tester = MoralAlignmentTester(output_dir=str(self.output_dir / "alignment_tests"),
+                                           data_dir=data_dir)
         self.judge = None  # Will be initialized with API keys
-        self.validator = ValidationSuite(output_dir=self.output_dir / "validation")
+        self.validator = ValidationSuite(output_dir=str(self.output_dir / "validation"))
         
         # Store results
         self.results = {
@@ -128,7 +126,8 @@ class FullValidationPipeline:
         
         # Step 4: Detect conflicts
         logger.info("\n⚔️ Step 4: Detecting Conflicts")
-        
+
+        conflicts = []
         if 'model_results' in test_results:
             conflicts = self.tester.detect_conflicts(test_results['model_results'])
             logger.info(f"Found {len(conflicts)} conflicts (threshold={self.tester.conflict_threshold})")
@@ -155,12 +154,8 @@ class FullValidationPipeline:
         if run_peer_review and self.tester.reasoning_traces:
             logger.info("\n👥 Step 5: Running Reciprocal Model Critique")
             
-            # Initialize judge with API keys
-            api_keys = {}
-            if os.getenv('OPENAI_API_KEY'):
-                api_keys['openai'] = os.getenv('OPENAI_API_KEY')
-            
-            self.judge = ModelJudge(api_keys=api_keys)
+            # Initialize judge with all configured API keys
+            self.judge = ModelJudge(api_keys=self.env_loader.get_api_keys())
             
             # Run reciprocal critique
             critique_df = self.judge.run_reciprocal_critique(
@@ -211,7 +206,7 @@ class FullValidationPipeline:
             self.results['human_review'] = {
                 'n_cases': len(human_review_data['cases']),
                 'file': str(human_review_file),
-                'instruction': "Run 'streamlit run human_dashboard.py' to review"
+                'instruction': "Run 'evalmoraal dashboard' to review"
             }
         
         # Step 7: Calculate final metrics
@@ -221,10 +216,10 @@ class FullValidationPipeline:
             # Survey alignment (correlations)
             correlations = {}
             for model, results in test_results['model_results'].items():
-                if 'metrics' in results:
+                if 'summary' in results:
                     correlations[model] = {
-                        'logprob': results['metrics'].get('correlation_logprob', 0),
-                        'direct': results['metrics'].get('correlation_direct', 0)
+                        'logprob': results['summary'].get('logprob_correlation', 0),
+                        'direct': results['summary'].get('direct_correlation', 0)
                     }
             
             self.results['survey_alignment'] = correlations
@@ -421,69 +416,3 @@ class FullValidationPipeline:
         report_file.write_text(report_str)
         
         print("\n" + report_str)
-
-
-def main():
-    """Main execution"""
-    
-    parser = argparse.ArgumentParser(
-        description="Run full validation pipeline with LLM judge and human review"
-    )
-    
-    parser.add_argument(
-        '--models',
-        nargs='+',
-        default=None,
-        help='Models to test (default: use available)'
-    )
-    
-    parser.add_argument(
-        '--samples',
-        type=int,
-        default=10,
-        help='Number of samples to test (default: 10)'
-    )
-    
-    parser.add_argument(
-        '--skip-peer-review',
-        action='store_true',
-        help='Skip reciprocal model critique'
-    )
-    
-    parser.add_argument(
-        '--skip-human-prep',
-        action='store_true',
-        help='Skip preparing data for human review'
-    )
-    
-    args = parser.parse_args()
-    
-    # Create pipeline
-    pipeline = FullValidationPipeline()
-    
-    # Run validation
-    results = pipeline.run_pipeline(
-        models=args.models,
-        n_samples=args.samples,
-        run_peer_review=not args.skip_peer_review,
-        save_for_human_review=not args.skip_human_prep
-    )
-    
-    if results:
-        logger.info("\n✅ Validation complete!")
-        logger.info("Next steps:")
-        logger.info("1. Review conflicts in conflicts.csv")
-        logger.info("2. Check peer review results in peer_review/")
-        logger.info("3. Run 'streamlit run human_dashboard.py' for human evaluation")
-        logger.info("4. View visualizations in figures/")
-        logger.info("5. Check paper outputs in paper/")
-    else:
-        logger.error("❌ Validation failed")
-        return 1
-    
-    return 0
-
-
-if __name__ == "__main__":
-    import sys
-    sys.exit(main())

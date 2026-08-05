@@ -1,0 +1,94 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evalmoraal"
+dynamic = ["version"]
+description = "EvalMORAAL: chain-of-thought and LLM-as-judge evaluation of moral alignment in large language models"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+authors = [
+    { name = "Hadi Mohammadi", email = "h.mohammadi@uu.nl" },
+    { name = "Anastasia Giachanou" },
+    { name = "Robert A. Bagheri" },
+]
+keywords = [
+    "moral alignment",
+    "chain-of-thought",
+    "LLM-as-judge",
+    "World Values Survey",
+    "evaluation framework",
+    "large language models",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.22",
+    "pandas>=2.0",
+    "scipy>=1.10",
+    "scikit-learn>=1.1",
+    "matplotlib>=3.5",
+    "seaborn>=0.12",
+    "plotly>=5.15",
+]
+
+[project.optional-dependencies]
+api = [
+    "openai>=1.0",
+    "anthropic>=0.25",
+    "google-generativeai>=0.7",
+]
+dashboards = [
+    "streamlit>=1.28",
+]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.4",
+    "build>=1.0",
+]
+all = [
+    "evalmoraal[api]",
+    "evalmoraal[dashboards]",
+]
+
+[project.scripts]
+evalmoraal = "evalmoraal.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/mohammadi-hadi/EvalMORAAL"
+Repository = "https://github.com/mohammadi-hadi/EvalMORAAL"
+Issues = "https://github.com/mohammadi-hadi/EvalMORAAL/issues"
+Paper = "https://aclanthology.org/2026.starsem-conference.34/"
+arXiv = "https://arxiv.org/abs/2510.05942"
+Zenodo = "https://doi.org/10.5281/zenodo.20292113"
+
+[tool.setuptools.dynamic]
+version = { attr = "evalmoraal.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.ruff.lint]
+# Keep the gate focused on real errors (syntax errors, undefined names).
+select = ["E9", "F63", "F7", "F82", "F821"]

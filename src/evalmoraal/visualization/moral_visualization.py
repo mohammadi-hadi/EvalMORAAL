@@ -11,8 +11,6 @@ import seaborn as sns
 from pathlib import Path
 from typing import Dict, List, Optional
 import json
-import warnings
-warnings.filterwarnings('ignore')
 
 class MoralVisualizationEngine:
     """Create visualizations for moral alignment evaluation"""

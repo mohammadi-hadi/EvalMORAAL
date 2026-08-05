@@ -18,29 +18,24 @@ import seaborn as sns
 import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
-import warnings
 
-warnings.filterwarnings('ignore')
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-# Set style
-plt.style.use('seaborn-v0_8-darkgrid')
-sns.set_palette("husl")
 
 class VisualizationEngine:
     """Creates visualizations for moral alignment analysis"""
-    
+
     def __init__(self, output_dir: str = "outputs/plots"):
         """Initialize visualization engine
-        
+
         Args:
             output_dir: Directory to save plots
         """
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Set style
+        plt.style.use('seaborn-v0_8-darkgrid')
+        sns.set_palette("husl")
         
         # Color schemes for different model types
         self.color_schemes = {
@@ -355,31 +350,19 @@ class VisualizationEngine:
         
         return ""
     
-    def plot_cost_analysis(self, models: List[str], samples: int = 1000,
+    def plot_cost_analysis(self, cost_data: List[Dict], samples: int = 1000,
                           save_name: str = "cost_analysis") -> str:
         """Create cost analysis visualization
-        
+
         Args:
-            models: List of model names
-            samples: Number of samples for cost estimation
+            cost_data: List of dicts with 'model', 'cost' and 'cost_per_1000'
+                entries (estimated API cost in USD per model)
+            samples: Number of samples the estimates refer to
             save_name: Name for saved plot
-            
+
         Returns:
             Path to saved plot
         """
-        from env_loader import get_env_loader
-        loader = get_env_loader()
-        
-        cost_data = []
-        for model in models:
-            cost_info = loader.estimate_costs(model, samples)
-            if cost_info['is_api_model']:
-                cost_data.append({
-                    'model': model,
-                    'cost': cost_info['estimated_cost_usd'],
-                    'cost_per_1000': cost_info['cost_per_1000']
-                })
-        
         if cost_data:
             df = pd.DataFrame(cost_data)
             

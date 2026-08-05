@@ -14,8 +14,6 @@ from scipy.stats import pearsonr, spearmanr, kendalltau
 from sklearn.metrics import cohen_kappa_score, mean_absolute_error, mean_squared_error
 import json
 from datetime import datetime
-import warnings
-warnings.filterwarnings('ignore')
 
 logger = logging.getLogger(__name__)
 

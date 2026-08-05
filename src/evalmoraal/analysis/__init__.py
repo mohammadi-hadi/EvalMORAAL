@@ -27,7 +27,6 @@ from .visualization import (
     plot_topic_heatmap,
 )
 
-__version__ = "1.0.0"
 __all__ = [
     # Conflict detection
     "extract_score",
